@@ -1,0 +1,230 @@
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { useCartStore } from '@/store/cart';
+import { ShoppingCart, Star, BookOpen, Printer, Calendar, FileText, Package } from 'lucide-react';
+
+interface Book {
+  id: string;
+  title: string;
+  slug: string;
+  author: string;
+  description: string;
+  price: number;
+  discountPrice: number | null;
+  coverImage: string;
+  isbn: string | null;
+  publisher: string | null;
+  publishYear: number | null;
+  pages: number | null;
+  language: string;
+  stock: number;
+  isBestseller: boolean;
+  isNew: boolean;
+  category: {
+    name: string;
+    slug: string;
+  };
+}
+
+interface BookDetailModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [book, setBook] = useState<Book | null>(null);
+  const [loading, setLoading] = useState(false);
+  const addItem = useCartStore((state) => state.addItem);
+
+  const fetchBook = useCallback(async (bookSlug: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/books?search=${bookSlug}&limit=1`);
+      const data = await res.json();
+      if (data.books && data.books.length > 0) {
+        const foundBook = data.books.find((b: Book) => b.slug === bookSlug);
+        if (foundBook) {
+          setBook(foundBook);
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const bookSlug = searchParams.get('book');
+    if (bookSlug && open) {
+      fetchBook(bookSlug);
+    }
+  }, [searchParams, open, fetchBook]);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('book');
+      router.push(`/?${params.toString()}`, { scroll: false });
+      setBook(null);
+    }
+    onOpenChange(newOpen);
+  };
+
+  const handleAddToCart = () => {
+    if (!book) return;
+    addItem({
+      bookId: book.id,
+      title: book.title,
+      author: book.author,
+      price: book.price,
+      discountPrice: book.discountPrice,
+      coverImage: book.coverImage,
+    });
+  };
+
+  const formatPrice = (price: number) => `Rp ${price.toLocaleString('id-ID')}`;
+  const discount = book?.discountPrice
+    ? Math.round(((book.price - book.discountPrice) / book.price) * 100)
+    : 0;
+
+  return (
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
+          </div>
+        ) : book ? (
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Image */}
+            <div className="relative aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
+              <Image
+                src={book.coverImage}
+                alt={book.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+              <div className="absolute top-3 left-3 flex flex-col gap-2">
+                {book.isBestseller && (
+                  <Badge className="bg-red-500 hover:bg-red-600 text-white">
+                    <Star className="w-3 h-3 mr-1" /> Bestseller
+                  </Badge>
+                )}
+                {book.isNew && (
+                  <Badge className="bg-green-500 hover:bg-green-600 text-white">Baru</Badge>
+                )}
+                {discount > 0 && (
+                  <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
+                    -{discount}%
+                  </Badge>
+                )}
+              </div>
+            </div>
+
+            {/* Details */}
+            <div className="flex flex-col">
+              <DialogHeader>
+                <Badge className="w-fit mb-2 bg-amber-100 text-amber-700 hover:bg-amber-100">
+                  {book.category.name}
+                </Badge>
+                <DialogTitle className="text-xl md:text-2xl">{book.title}</DialogTitle>
+              </DialogHeader>
+              <p className="text-gray-600 mt-2">by {book.author}</p>
+
+              {/* Price */}
+              <div className="mt-4">
+                {book.discountPrice ? (
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl font-bold text-amber-700">
+                      {formatPrice(book.discountPrice)}
+                    </span>
+                    <span className="text-lg text-gray-400 line-through">
+                      {formatPrice(book.price)}
+                    </span>
+                    <Badge className="bg-red-100 text-red-600 hover:bg-red-100">
+                      Hemat {formatPrice(book.price - book.discountPrice)}
+                    </Badge>
+                  </div>
+                ) : (
+                  <span className="text-2xl font-bold text-amber-700">
+                    {formatPrice(book.price)}
+                  </span>
+                )}
+              </div>
+
+              {/* Stock */}
+              <div className="mt-4 flex items-center gap-2">
+                <Package className="w-4 h-4 text-gray-500" />
+                <span className={book.stock > 0 ? 'text-green-600' : 'text-red-600'}>
+                  {book.stock > 0 ? `Stok: ${book.stock} tersedia` : 'Stok Habis'}
+                </span>
+              </div>
+
+              {/* Add to Cart */}
+              <Button
+                className="mt-4 bg-amber-600 hover:bg-amber-700 text-white h-12 text-base"
+                onClick={handleAddToCart}
+                disabled={book.stock === 0}
+              >
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Tambah ke Keranjang
+              </Button>
+
+              <Separator className="my-4" />
+
+              {/* Book Info */}
+              <div className="space-y-2 text-sm">
+                {book.isbn && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <BookOpen className="w-4 h-4" />
+                    <span>ISBN: {book.isbn}</span>
+                  </div>
+                )}
+                {book.publisher && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Printer className="w-4 h-4" />
+                    <span>Penerbit: {book.publisher}</span>
+                  </div>
+                )}
+                {book.publishYear && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Calendar className="w-4 h-4" />
+                    <span>Tahun Terbit: {book.publishYear}</span>
+                  </div>
+                )}
+                {book.pages && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <FileText className="w-4 h-4" />
+                    <span>{book.pages} halaman</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 text-gray-600">
+                  <span>Bahasa: {book.language}</span>
+                </div>
+              </div>
+
+              <Separator className="my-4" />
+
+              {/* Description */}
+              <div>
+                <h4 className="font-semibold mb-2">Deskripsi</h4>
+                <p className="text-sm text-gray-600 leading-relaxed">{book.description}</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500">Buku tidak ditemukan</div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}

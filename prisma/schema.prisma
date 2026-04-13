@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model for future authentication
+model User {
+  id        String      @id @default(cuid())
+  email     String      @unique
+  name      String?
+  phone     String?
+  address   String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  carts     Cart[]
+  orders    Order[]
+}
+
+// Category for organizing books (Bibles, Catholic Books, Devotionals, etc.)
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  books       Book[]
+}
+
+// Book model
+model Book {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  author      String
+  description String
+  price       Float
+  discountPrice Float?
+  coverImage  String
+  isbn        String?  @unique
+  publisher   String?
+  publishYear Int?
+  pages       Int?
+  language    String   @default("Indonesia")
+  stock       Int      @default(0)
+  isFeatured  Boolean  @default(false)
+  isBestseller Boolean @default(false)
+  isNew       Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+}
+
+// Shopping Cart
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?
+  sessionId String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User?      @relation(fields: [userId], references: [id])
+  items     CartItem[]
+}
+
+// Cart Items
+model CartItem {
+  id       String   @id @default(cuid())
+  quantity Int      @default(1)
+  cartId   String
+  bookId   String
+  cart     Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  book     Book     @relation(fields: [bookId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, bookId])
+}
+
+// Order model
+model Order {
+  id            String      @id @default(cuid())
+  userId        String?
+  customerName  String
+  customerEmail String
+  customerPhone String
+  shippingAddress String
+  totalAmount   Float
+  status        String      @default("pending") // pending, paid, shipped, delivered, cancelled
+  paymentMethod String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User?       @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+}
+
+// Order Items
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  bookId    String
+  quantity  Int
+  price     Float
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  book      Book     @relation(fields: [bookId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+// Banner/Slider for homepage
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String?
+  image     String
+  link      String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
