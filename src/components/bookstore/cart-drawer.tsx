@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useCartStore } from '@/store/cart';
-import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, X } from 'lucide-react';
 import { CheckoutModal } from './checkout-modal';
 
 interface CartDrawerProps {
@@ -50,10 +50,20 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
       <Sheet open={open} onOpenChange={handleOpenChange}>
         <SheetContent className="w-full sm:max-w-lg flex flex-col">
           <SheetHeader>
-            <SheetTitle className="flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-blue-700" />
-              Keranjang Belanja
-            </SheetTitle>
+            <div className="flex items-center justify-between">
+              <SheetTitle className="flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5 text-blue-700" />
+                Keranjang Belanja
+              </SheetTitle>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 rounded-full hover:bg-gray-100 md:hidden"
+                onClick={() => handleOpenChange(false)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
           </SheetHeader>
 
           {items.length === 0 ? (

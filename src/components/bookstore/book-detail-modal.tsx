@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCartStore } from '@/store/cart';
-import { ShoppingCart, Star, BookOpen, Printer, Calendar, FileText, Package, AlertCircle } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { ShoppingCart, Star, BookOpen, Printer, Calendar, FileText, Package, AlertCircle, Check } from 'lucide-react';
 
 interface Book {
   id: string;
@@ -45,6 +46,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
+  const { toast } = useToast();
 
   const fetchBook = useCallback(async (bookSlug: string) => {
     setLoading(true);
@@ -106,6 +108,11 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
       price: book.price,
       discountPrice: book.discountPrice,
       coverImage: book.coverImage,
+    });
+    toast({
+      title: 'Berhasil ditambahkan!',
+      description: `${book.title} telah ditambahkan ke keranjang.`,
+      className: 'bg-green-50 border-green-200',
     });
   };
 
