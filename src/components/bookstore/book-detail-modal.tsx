@@ -3,12 +3,12 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useCartStore } from '@/store/cart';
-import { ShoppingCart, Star, BookOpen, Printer, Calendar, FileText, Package } from 'lucide-react';
+import { ShoppingCart, Star, BookOpen, Printer, Calendar, FileText, Package, AlertCircle } from 'lucide-react';
 
 interface Book {
   id: string;
@@ -43,19 +43,33 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
   const searchParams = useSearchParams();
   const [book, setBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const addItem = useCartStore((state) => state.addItem);
 
   const fetchBook = useCallback(async (bookSlug: string) => {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch(`/api/books?search=${bookSlug}&limit=1`);
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.details || data.error || 'Failed to fetch book');
+      }
+      
       if (data.books && data.books.length > 0) {
         const foundBook = data.books.find((b: Book) => b.slug === bookSlug);
         if (foundBook) {
           setBook(foundBook);
+        } else {
+          setError('Buku tidak ditemukan');
         }
+      } else {
+        setError('Buku tidak ditemukan');
       }
+    } catch (err) {
+      console.error('Error fetching book:', err);
+      setError(err instanceof Error ? err.message : 'Terjadi kesalahan saat memuat data');
     } finally {
       setLoading(false);
     }
@@ -68,12 +82,20 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
     }
   }, [searchParams, open, fetchBook]);
 
+  useEffect(() => {
+    if (!open) {
+      setBook(null);
+      setError(null);
+    }
+  }, [open]);
+
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
       const params = new URLSearchParams(searchParams.toString());
       params.delete('book');
       router.push(`/?${params.toString()}`, { scroll: false });
       setBook(null);
+      setError(null);
     }
     onOpenChange(newOpen);
   };
@@ -98,9 +120,34 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="sr-only">
+          <DialogTitle>
+            {book ? book.title : error ? 'Error' : 'Memuat Buku'}
+          </DialogTitle>
+          <DialogDescription>
+            {book ? `Detail buku ${book.title} oleh ${book.author}` : ''}
+          </DialogDescription>
+        </DialogHeader>
+        
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
+            <p className="text-lg font-medium text-gray-700 mb-2">Oops!</p>
+            <p className="text-gray-500">{error}</p>
+            <Button
+              variant="outline"
+              className="mt-4"
+              onClick={() => {
+                const bookSlug = searchParams.get('book');
+                if (bookSlug) fetchBook(bookSlug);
+              }}
+            >
+              Coba Lagi
+            </Button>
           </div>
         ) : book ? (
           <div className="grid md:grid-cols-2 gap-6">
@@ -132,18 +179,18 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
 
             {/* Details */}
             <div className="flex flex-col">
-              <DialogHeader>
-                <Badge className="w-fit mb-2 bg-amber-100 text-amber-700 hover:bg-amber-100">
+              <div className="mb-2">
+                <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100">
                   {book.category.name}
                 </Badge>
-                <DialogTitle className="text-xl md:text-2xl">{book.title}</DialogTitle>
-              </DialogHeader>
+              </div>
+              <h2 className="text-xl md:text-2xl font-bold">{book.title}</h2>
               <p className="text-gray-600 mt-2">by {book.author}</p>
 
               {/* Price */}
               <div className="mt-4">
                 {book.discountPrice ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap">
                     <span className="text-2xl font-bold text-amber-700">
                       {formatPrice(book.discountPrice)}
                     </span>
@@ -222,7 +269,9 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
             </div>
           </div>
         ) : (
-          <div className="text-center py-12 text-gray-500">Buku tidak ditemukan</div>
+          <div className="text-center py-12 text-gray-500">
+            Pilih buku untuk melihat detail
+          </div>
         )}
       </DialogContent>
     </Dialog>
