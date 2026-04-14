@@ -86,9 +86,11 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
+      // Preserve existing params, just remove book
       const params = new URLSearchParams(searchParams.toString());
       params.delete('book');
-      router.push(`/?${params.toString()}`, { scroll: false });
+      const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+      router.push(newUrl, { scroll: false });
       setBook(null);
       setError(null);
     }

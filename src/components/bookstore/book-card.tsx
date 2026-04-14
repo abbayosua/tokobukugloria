@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star } from 'lucide-react';
@@ -28,6 +28,9 @@ interface BookCardProps {
 }
 
 export function BookCard({ book }: BookCardProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const addItem = useCartStore((state) => state.addItem);
   
   const discount = book.discountPrice
@@ -47,8 +50,19 @@ export function BookCard({ book }: BookCardProps) {
     });
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Preserve existing query params and add book param
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('book', book.slug);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
+
   return (
-    <div className="group bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+    <div 
+      className="group bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col h-full cursor-pointer"
+      onClick={handleClick}
+    >
       {/* Image Container */}
       <div className="relative aspect-[3/4] bg-gray-50 overflow-hidden">
         <Image
@@ -93,15 +107,13 @@ export function BookCard({ book }: BookCardProps) {
 
       {/* Content */}
       <div className="p-3 flex flex-col flex-1">
-        <Link href={`/?book=${book.slug}`} className="block">
-          <p className="text-xs text-blue-600 mb-1 hover:text-blue-700">
-            {book.category.name}
-          </p>
-          <h3 className="font-medium text-gray-900 text-sm line-clamp-2 hover:text-blue-700 transition-colors mb-1">
-            {book.title}
-          </h3>
-          <p className="text-xs text-gray-500 mb-2">{book.author}</p>
-        </Link>
+        <p className="text-xs text-blue-600 mb-1">
+          {book.category.name}
+        </p>
+        <h3 className="font-medium text-gray-900 text-sm line-clamp-2 group-hover:text-blue-700 transition-colors mb-1">
+          {book.title}
+        </h3>
+        <p className="text-xs text-gray-500 mb-2">{book.author}</p>
         
         <div className="mt-auto">
           {book.discountPrice ? (
