@@ -31,10 +31,20 @@ export function Footer() {
               kasih dan dedikasi untuk memenuhi kebutuhan rohani Anda.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-700 transition-colors">
+              <a 
+                href="https://www.facebook.com/gloria.tokobuku.batam/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-700 transition-colors"
+              >
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-700 transition-colors">
+              <a 
+                href="https://www.instagram.com/tokobukugloria/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 transition-colors"
+              >
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
@@ -57,12 +67,12 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Tautan Cepat</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-blue-400 transition-colors">Tentang Kami</Link></li>
-              <li><Link href="#" className="hover:text-blue-400 transition-colors">Cara Pemesanan</Link></li>
-              <li><Link href="#" className="hover:text-blue-400 transition-colors">Pengiriman</Link></li>
-              <li><Link href="#" className="hover:text-blue-400 transition-colors">Pengembalian</Link></li>
-              <li><Link href="#" className="hover:text-blue-400 transition-colors">FAQ</Link></li>
-              <li><Link href="#" className="hover:text-blue-400 transition-colors">Hubungi Kami</Link></li>
+              <li><Link href="/?page=tentang-kami" className="hover:text-blue-400 transition-colors">Tentang Kami</Link></li>
+              <li><Link href="/?page=cara-pemesanan" className="hover:text-blue-400 transition-colors">Cara Pemesanan</Link></li>
+              <li><Link href="/?page=pengiriman" className="hover:text-blue-400 transition-colors">Pengiriman</Link></li>
+              <li><Link href="/?page=pengembalian" className="hover:text-blue-400 transition-colors">Pengembalian</Link></li>
+              <li><Link href="/?page=faq" className="hover:text-blue-400 transition-colors">FAQ</Link></li>
+              <li><Link href="/?page=hubungi-kami" className="hover:text-blue-400 transition-colors">Hubungi Kami</Link></li>
             </ul>
           </div>
 
@@ -109,8 +119,8 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-2 text-sm text-gray-500">
             <p>© 2024 Toko Buku Gloria. All rights reserved.</p>
             <div className="flex gap-4">
-              <Link href="#" className="hover:text-gray-300 transition-colors">Kebijakan Privasi</Link>
-              <Link href="#" className="hover:text-gray-300 transition-colors">Syarat & Ketentuan</Link>
+              <Link href="/?page=kebijakan-privasi" className="hover:text-gray-300 transition-colors">Kebijakan Privasi</Link>
+              <Link href="/?page=syarat-ketentuan" className="hover:text-gray-300 transition-colors">Syarat & Ketentuan</Link>
             </div>
           </div>
         </div>

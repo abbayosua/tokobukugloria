@@ -9,6 +9,7 @@ import { BookCard } from '@/components/bookstore/book-card';
 import { CategoryCard } from '@/components/bookstore/category-card';
 import { CartDrawer } from '@/components/bookstore/cart-drawer';
 import { BookDetailModal } from '@/components/bookstore/book-detail-modal';
+import { InfoModal } from '@/components/bookstore/info-modal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -64,12 +65,15 @@ function HomePageContent() {
   
   const [cartOpen, setCartOpen] = useState(false);
   const [bookDetailOpen, setBookDetailOpen] = useState(false);
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
 
   useEffect(() => {
     const cart = searchParams.get('cart');
     const book = searchParams.get('book');
+    const page = searchParams.get('page');
     if (cart === 'open') setCartOpen(true);
     if (book) setBookDetailOpen(true);
+    if (page) setInfoModalOpen(true);
   }, [searchParams]);
 
   useEffect(() => {
@@ -148,7 +152,7 @@ function HomePageContent() {
                 <Link href="/" className="hover:text-blue-600">Beranda</Link>
                 <ChevronRight className="w-4 h-4" />
                 {searchQuery ? (
-                  <span>Hasil pencarian: "{searchQuery}"</span>
+                  <span>Hasil pencarian: &quot;{searchQuery}&quot;</span>
                 ) : currentCategory ? (
                   <span className="text-blue-700 font-medium">{currentCategory.name}</span>
                 ) : null}
@@ -307,6 +311,7 @@ function HomePageContent() {
       {/* Modals & Drawers */}
       <CartDrawer open={cartOpen} onOpenChange={setCartOpen} />
       <BookDetailModal open={bookDetailOpen} onOpenChange={setBookDetailOpen} />
+      <InfoModal open={infoModalOpen} onOpenChange={setInfoModalOpen} />
     </div>
   );
 }
