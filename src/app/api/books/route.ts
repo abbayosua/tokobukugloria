@@ -12,6 +12,12 @@ export async function GET(request: Request) {
   const search = searchParams.get('search');
 
   try {
+    // Debug: Log environment info
+    console.log('[BOOKS API] Starting request...');
+    console.log('[BOOKS API] NODE_ENV:', process.env.NODE_ENV);
+    console.log('[BOOKS API] DATABASE_URL exists:', !!process.env.DATABASE_URL);
+    console.log('[BOOKS API] DIRECT_URL exists:', !!process.env.DIRECT_URL);
+    
     const where: Prisma.BookWhereInput = {};
     
     if (category) {
@@ -38,6 +44,7 @@ export async function GET(request: Request) {
       ];
     }
 
+    console.log('[BOOKS API] Querying database...');
     const books = await db.book.findMany({
       where,
       include: {
@@ -49,11 +56,26 @@ export async function GET(request: Request) {
       ...(limit ? { take: parseInt(limit) } : {}),
     });
 
+    console.log('[BOOKS API] Success! Found', books.length, 'books');
     return NextResponse.json({ books });
   } catch (error) {
-    console.error('Error fetching books:', error);
+    // Detailed error logging
+    console.error('[BOOKS API] ERROR:', error);
+    console.error('[BOOKS API] Error type:', error?.constructor?.name);
+    console.error('[BOOKS API] Error message:', error instanceof Error ? error.message : String(error));
+    console.error('[BOOKS API] Error stack:', error instanceof Error ? error.stack : 'No stack');
+    
     return NextResponse.json(
-      { error: 'Failed to fetch books' },
+      { 
+        error: 'Failed to fetch books',
+        details: error instanceof Error ? error.message : String(error),
+        errorType: error?.constructor?.name,
+        debug: {
+          hasDbUrl: !!process.env.DATABASE_URL,
+          hasDirectUrl: !!process.env.DIRECT_URL,
+          nodeEnv: process.env.NODE_ENV,
+        }
+      },
       { status: 500 }
     );
   }
