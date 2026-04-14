@@ -66,7 +66,7 @@ export function HeroBanner({ banners }: HeroBannerProps) {
             )}
             {banner.link && (
               <Link href={banner.link}>
-                <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+                <Button className="bg-blue-700 hover:bg-blue-800 text-white">
                   Lihat Koleksi
                 </Button>
               </Link>
@@ -99,7 +99,7 @@ export function HeroBanner({ banners }: HeroBannerProps) {
                 onClick={() => setCurrentIndex(index)}
                 className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all ${
                   index === currentIndex
-                    ? 'bg-amber-500 w-4 md:w-6'
+                    ? 'bg-blue-500 w-4 md:w-6'
                     : 'bg-white/60 hover:bg-white/80'
                 }`}
               />

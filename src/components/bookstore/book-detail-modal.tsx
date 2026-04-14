@@ -126,7 +126,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
         
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -165,7 +165,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
                   <Badge className="bg-green-500 hover:bg-green-600 text-white">Baru</Badge>
                 )}
                 {discount > 0 && (
-                  <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
+                  <Badge className="bg-blue-500 hover:bg-blue-600 text-white">
                     -{discount}%
                   </Badge>
                 )}
@@ -175,7 +175,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
             {/* Details */}
             <div className="flex flex-col">
               <div className="mb-2">
-                <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100">
+                <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">
                   {book.category.name}
                 </Badge>
               </div>
@@ -186,7 +186,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
               <div className="mt-4">
                 {book.discountPrice ? (
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-2xl font-bold text-amber-700">
+                    <span className="text-2xl font-bold text-blue-700">
                       {formatPrice(book.discountPrice)}
                     </span>
                     <span className="text-lg text-gray-400 line-through">
@@ -197,7 +197,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
                     </Badge>
                   </div>
                 ) : (
-                  <span className="text-2xl font-bold text-amber-700">
+                  <span className="text-2xl font-bold text-blue-700">
                     {formatPrice(book.price)}
                   </span>
                 )}
@@ -213,7 +213,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
 
               {/* Add to Cart */}
               <Button
-                className="mt-4 bg-amber-600 hover:bg-amber-700 text-white h-12 text-base"
+                className="mt-4 bg-blue-700 hover:bg-blue-800 text-white h-12 text-base"
                 onClick={handleAddToCart}
                 disabled={book.stock === 0}
               >

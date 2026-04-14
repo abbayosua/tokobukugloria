@@ -145,12 +145,12 @@ function HomePageContent() {
             <div className="space-y-6">
               {/* Breadcrumb */}
               <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Link href="/" className="hover:text-amber-600">Beranda</Link>
+                <Link href="/" className="hover:text-blue-600">Beranda</Link>
                 <ChevronRight className="w-4 h-4" />
                 {searchQuery ? (
                   <span>Hasil pencarian: "{searchQuery}"</span>
                 ) : currentCategory ? (
-                  <span className="text-amber-700 font-medium">{currentCategory.name}</span>
+                  <span className="text-blue-700 font-medium">{currentCategory.name}</span>
                 ) : null}
               </div>
 
@@ -178,7 +178,7 @@ function HomePageContent() {
                   <BookOpen className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                   <p className="text-lg">Tidak ada buku ditemukan</p>
                   <Link href="/">
-                    <Button variant="link" className="text-amber-600 mt-2">
+                    <Button variant="link" className="text-blue-600 mt-2">
                       Kembali ke Beranda
                     </Button>
                   </Link>
@@ -210,18 +210,18 @@ function HomePageContent() {
                 <Tabs defaultValue="featured" className="w-full">
                   <div className="flex items-center justify-between mb-4">
                     <TabsList className="bg-white border">
-                      <TabsTrigger value="featured" className="data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700">
+                      <TabsTrigger value="featured" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700">
                         <Sparkles className="w-4 h-4 mr-1" /> Pilihan
                       </TabsTrigger>
-                      <TabsTrigger value="bestseller" className="data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700">
+                      <TabsTrigger value="bestseller" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700">
                         <TrendingUp className="w-4 h-4 mr-1" /> Bestseller
                       </TabsTrigger>
-                      <TabsTrigger value="new" className="data-[state=active]:bg-amber-100 data-[state=active]:text-amber-700">
+                      <TabsTrigger value="new" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700">
                         <Clock className="w-4 h-4 mr-1" /> Baru
                       </TabsTrigger>
                     </TabsList>
                     <Link href="/?category=all">
-                      <Button variant="link" className="text-amber-600">
+                      <Button variant="link" className="text-blue-600">
                         Lihat Semua <ChevronRight className="w-4 h-4 ml-1" />
                       </Button>
                     </Link>
@@ -254,19 +254,19 @@ function HomePageContent() {
               </section>
 
               {/* Promo Banner */}
-              <section className="bg-gradient-to-r from-amber-600 to-amber-700 rounded-xl p-6 md:p-8 text-white">
+              <section className="bg-gradient-to-r from-blue-700 to-blue-800 rounded-xl p-6 md:p-8 text-white">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
                     <Badge className="bg-white/20 text-white mb-2">Promo Spesial</Badge>
                     <h3 className="text-xl md:text-2xl font-bold mb-2">
                       Diskon Hingga 30% untuk Alkitab
                     </h3>
-                    <p className="text-amber-100 text-sm md:text-base">
+                    <p className="text-blue-100 text-sm md:text-base">
                       Dapatkan Alkitab berkualitas dengan harga spesial. Promo berlaku hingga akhir bulan ini!
                     </p>
                   </div>
                   <Link href="/?category=alkitab">
-                    <Button className="bg-white text-amber-700 hover:bg-amber-50 shrink-0">
+                    <Button className="bg-white text-blue-700 hover:bg-blue-50 shrink-0">
                       Belanja Sekarang
                     </Button>
                   </Link>
@@ -285,9 +285,9 @@ function HomePageContent() {
                     <Link
                       key={cat.id}
                       href={`/?category=${cat.slug}`}
-                      className="bg-white border rounded-lg p-4 hover:border-amber-300 hover:shadow-md transition-all group"
+                      className="bg-white border rounded-lg p-4 hover:border-blue-300 hover:shadow-md transition-all group"
                     >
-                      <h3 className="font-medium text-gray-900 group-hover:text-amber-700">
+                      <h3 className="font-medium text-gray-900 group-hover:text-blue-700">
                         {cat.name}
                       </h3>
                       <p className="text-sm text-gray-500">
@@ -315,7 +315,7 @@ export default function Home() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
       </div>
     }>
       <HomePageContent />

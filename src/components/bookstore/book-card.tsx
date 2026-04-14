@@ -72,7 +72,7 @@ export function BookCard({ book }: BookCardProps) {
             </Badge>
           )}
           {discount > 0 && (
-            <Badge className="bg-amber-500 hover:bg-amber-600 text-white text-xs px-2 py-0.5">
+            <Badge className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-2 py-0.5">
               -{discount}%
             </Badge>
           )}
@@ -83,7 +83,7 @@ export function BookCard({ book }: BookCardProps) {
           <Button
             onClick={handleAddToCart}
             size="sm"
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white"
+            className="w-full bg-blue-700 hover:bg-blue-800 text-white"
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             Tambah ke Keranjang
@@ -94,10 +94,10 @@ export function BookCard({ book }: BookCardProps) {
       {/* Content */}
       <div className="p-3 flex flex-col flex-1">
         <Link href={`/?book=${book.slug}`} className="block">
-          <p className="text-xs text-amber-600 mb-1 hover:text-amber-700">
+          <p className="text-xs text-blue-600 mb-1 hover:text-blue-700">
             {book.category.name}
           </p>
-          <h3 className="font-medium text-gray-900 text-sm line-clamp-2 hover:text-amber-700 transition-colors mb-1">
+          <h3 className="font-medium text-gray-900 text-sm line-clamp-2 hover:text-blue-700 transition-colors mb-1">
             {book.title}
           </h3>
           <p className="text-xs text-gray-500 mb-2">{book.author}</p>
@@ -106,7 +106,7 @@ export function BookCard({ book }: BookCardProps) {
         <div className="mt-auto">
           {book.discountPrice ? (
             <div className="flex items-center gap-2">
-              <span className="font-bold text-amber-700">
+              <span className="font-bold text-blue-700">
                 Rp {book.discountPrice.toLocaleString('id-ID')}
               </span>
               <span className="text-xs text-gray-400 line-through">
@@ -114,7 +114,7 @@ export function BookCard({ book }: BookCardProps) {
               </span>
             </div>
           ) : (
-            <span className="font-bold text-amber-700">
+            <span className="font-bold text-blue-700">
               Rp {book.price.toLocaleString('id-ID')}
             </span>
           )}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Search, ShoppingCart, Menu, X, Book } from 'lucide-react';
+import { Search, ShoppingCart, Menu, Book } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -35,10 +35,10 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b shadow-sm">
       {/* Top bar */}
-      <div className="bg-amber-700 text-white text-xs py-1.5">
+      <div className="bg-blue-800 text-white text-xs py-1.5">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <span>Pengiriman ke seluruh Indonesia</span>
-          <span className="hidden sm:inline">📞 Customer Service: (021) 1234-5678</span>
+          <span className="hidden sm:inline">📞 WhatsApp: 0823-2336-2107</span>
         </div>
       </div>
 
@@ -47,11 +47,11 @@ export function Header() {
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center">
               <Book className="w-6 h-6 text-white" />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold text-amber-800 leading-tight">
+              <h1 className="text-lg font-bold text-blue-900 leading-tight">
                 Toko Buku Gloria
               </h1>
               <p className="text-xs text-gray-500">Toko Buku Kristen</p>
@@ -66,13 +66,13 @@ export function Header() {
                 placeholder="Cari buku, Alkitab, renungan..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pr-12 border-amber-200 focus:border-amber-500 focus:ring-amber-500"
+                className="w-full pr-12 border-blue-200 focus:border-blue-500 focus:ring-blue-500"
               />
               <Button
                 type="submit"
                 size="icon"
                 variant="ghost"
-                className="absolute right-0 top-0 h-full px-3 text-amber-600 hover:text-amber-800"
+                className="absolute right-0 top-0 h-full px-3 text-blue-700 hover:text-blue-900"
               >
                 <Search className="w-5 h-5" />
               </Button>
@@ -82,13 +82,13 @@ export function Header() {
           {/* Actions */}
           <div className="flex items-center gap-2">
             {/* Mobile Search */}
-            <Button variant="ghost" size="icon" className="md:hidden text-amber-700">
+            <Button variant="ghost" size="icon" className="md:hidden text-blue-700">
               <Search className="w-5 h-5" />
             </Button>
 
             {/* Cart */}
             <Link href="/?cart=open">
-              <Button variant="ghost" size="icon" className="relative text-amber-700 hover:bg-amber-50">
+              <Button variant="ghost" size="icon" className="relative text-blue-700 hover:bg-blue-50">
                 <ShoppingCart className="w-5 h-5" />
                 {itemCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-red-500 text-white border-0">
@@ -101,20 +101,20 @@ export function Header() {
             {/* Mobile Menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden text-amber-700">
+                <Button variant="ghost" size="icon" className="md:hidden text-blue-700">
                   <Menu className="w-5 h-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
                 <div className="flex flex-col gap-4 mt-4">
-                  <h2 className="font-bold text-lg text-amber-800">Kategori</h2>
+                  <h2 className="font-bold text-lg text-blue-900">Kategori</h2>
                   <nav className="flex flex-col gap-1">
                     {categories.map((cat) => (
                       <Link
                         key={cat.slug}
                         href={`/?category=${cat.slug}`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="px-3 py-2 rounded-lg hover:bg-amber-50 text-gray-700 hover:text-amber-700 transition-colors"
+                        className="px-3 py-2 rounded-lg hover:bg-blue-50 text-gray-700 hover:text-blue-700 transition-colors"
                       >
                         {cat.name}
                       </Link>
@@ -132,7 +132,7 @@ export function Header() {
             <Link
               key={cat.slug}
               href={`/?category=${cat.slug}`}
-              className="px-3 py-1.5 text-sm text-gray-600 hover:text-amber-700 hover:bg-amber-50 rounded-full whitespace-nowrap transition-colors"
+              className="px-3 py-1.5 text-sm text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-full whitespace-nowrap transition-colors"
             >
               {cat.name}
             </Link>
