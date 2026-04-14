@@ -50,7 +50,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/books?search=${bookSlug}&limit=1`);
+      const res = await fetch(`/api/books?slug=${bookSlug}`);
       const data = await res.json();
       
       if (!res.ok) {
@@ -58,12 +58,7 @@ export function BookDetailModal({ open, onOpenChange }: BookDetailModalProps) {
       }
       
       if (data.books && data.books.length > 0) {
-        const foundBook = data.books.find((b: Book) => b.slug === bookSlug);
-        if (foundBook) {
-          setBook(foundBook);
-        } else {
-          setError('Buku tidak ditemukan');
-        }
+        setBook(data.books[0]);
       } else {
         setError('Buku tidak ditemukan');
       }
