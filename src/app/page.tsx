@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Header } from '@/components/bookstore/header';
 import { Footer } from '@/components/bookstore/footer';
+import { BottomNav } from '@/components/bookstore/bottom-nav';
 import { HeroBanner } from '@/components/bookstore/hero-banner';
 import { BookCard } from '@/components/bookstore/book-card';
 import { CategoryCard } from '@/components/bookstore/category-card';
@@ -142,7 +143,7 @@ function HomePageContent() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 pb-20 md:pb-0">
         <div className="container mx-auto px-4 py-4 md:py-6">
           {/* Show filtered view if category or search is active */}
           {(category || searchQuery) ? (
@@ -307,6 +308,9 @@ function HomePageContent() {
       </main>
 
       <Footer />
+
+      {/* Bottom Navigation - Mobile Only */}
+      <BottomNav />
 
       {/* Modals & Drawers */}
       <CartDrawer open={cartOpen} onOpenChange={setCartOpen} />

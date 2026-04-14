@@ -360,14 +360,8 @@ const pageInfo = {
 export function InfoModal({ open, onOpenChange }: InfoModalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [currentPage, setCurrentPage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const page = searchParams.get('page');
-    if (page && pageInfo[page as keyof typeof pageInfo]) {
-      setCurrentPage(page);
-    }
-  }, [searchParams]);
+  const pageParam = searchParams.get('page');
+  const currentPage = pageParam && pageInfo[pageParam as keyof typeof pageInfo] ? pageParam : null;
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
@@ -375,7 +369,6 @@ export function InfoModal({ open, onOpenChange }: InfoModalProps) {
       params.delete('page');
       const newUrl = params.toString() ? `/?${params.toString()}` : '/';
       router.push(newUrl, { scroll: false });
-      setCurrentPage(null);
     }
     onOpenChange(newOpen);
   };

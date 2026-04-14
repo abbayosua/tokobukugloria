@@ -38,7 +38,7 @@ export function Header() {
       {/* Top bar */}
       <div className="bg-blue-800 text-white text-xs py-1.5">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <span>Pengiriman ke seluruh Indonesia</span>
+          <span>Pemesanan Online 24 Jam</span>
           <span className="hidden sm:inline">📞 WhatsApp: 0823-2336-2107</span>
         </div>
       </div>
