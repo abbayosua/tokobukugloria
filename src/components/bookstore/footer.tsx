@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Book, Mail, Phone, MapPin, Facebook, Instagram, Clock } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Phone, MapPin, Facebook, Instagram, Clock } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -10,8 +11,14 @@ export function Footer() {
           {/* About */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center">
-                <Book className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 relative rounded-lg overflow-hidden">
+                <Image
+                  src="/logo.jpg"
+                  alt="Toko Buku Gloria"
+                  fill
+                  className="object-cover"
+                  sizes="40px"
+                />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white">Toko Buku Gloria</h3>
@@ -83,11 +90,7 @@ export function Footer() {
               </p>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Selasa - Sabtu</span>
-                  <span className="text-white">9.00 am - 8.00 pm</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Senday</span>
+                  <span className="text-gray-400">Senin - Sabtu</span>
                   <span className="text-white">9.00 am - 8.00 pm</span>
                 </div>
                 <div className="flex justify-between">

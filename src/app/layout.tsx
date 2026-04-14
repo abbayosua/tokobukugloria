@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { WhatsAppButton } from "@/components/bookstore/whatsapp-button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   keywords: ["toko buku kristen", "alkitab", "buku katolik", "renungan", "teologi", "buku rohani", "toko buku online"],
   authors: [{ name: "Toko Buku Gloria" }],
   icons: {
-    icon: "/favicon.ico",
+    icon: "/logo.jpg",
   },
   openGraph: {
     title: "Toko Buku Gloria - Toko Buku Kristen Terlengkap",
@@ -45,6 +46,7 @@ export default function RootLayout({
       >
         {children}
         <Toaster />
+        <WhatsAppButton />
       </body>
     </html>
   );

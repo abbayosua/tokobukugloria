@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Search, ShoppingCart, Menu, Book } from 'lucide-react';
+import Image from 'next/image';
+import { Search, ShoppingCart, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -47,8 +48,14 @@ export function Header() {
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 bg-blue-700 rounded-lg flex items-center justify-center">
-              <Book className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 relative rounded-lg overflow-hidden">
+              <Image
+                src="/logo.jpg"
+                alt="Toko Buku Gloria"
+                fill
+                className="object-cover"
+                sizes="40px"
+              />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold text-blue-900 leading-tight">
